@@ -40,4 +40,12 @@ export const Subheading = ({ ...props }) => {
   return <Text fontSize="subheading" {...props} />;
 };
 
+export const ItemStats = ({ ...props }) => {
+  return <Text style={{ paddingBottom: 5 }} fontWeight="bold" {...props} />;
+};
+
+export const ItemStatsLabel = ({ ...props }) => {
+  return <Text color="textSecondary" {...props} />;
+};
+
 export default Text;
