@@ -6,6 +6,9 @@ const styles = StyleSheet.create({
     height: 10,
     backgroundColor: '#e1e4e8',
   },
+  container: {
+    backgroundColor: 'white',
+  },
 });
 
 const repositories = [
@@ -60,6 +63,7 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const RepositoryList = () => {
   return (
     <FlatList
+      style={styles.container}
       data={repositories}
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => <RepositoryItem item={item} />}
