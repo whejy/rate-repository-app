@@ -12,7 +12,7 @@ const RepositoryItemCounts = ({ item, label }) => {
     },
   });
 
-  item > 999 ? (item = parseFloat((item / 1000).toFixed(1)) + 'k') : item;
+  item > 999 && (item = parseFloat((item / 1000).toFixed(1)) + 'k');
 
   return (
     <View style={styles.itemContainer}>
