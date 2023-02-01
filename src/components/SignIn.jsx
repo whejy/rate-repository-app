@@ -1,6 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import useSignIn from '../hooks/useSignIn';
 import Button from './Button';
 import FormikTextInput from './FormikTextInput';
 
@@ -33,7 +34,19 @@ const SignInForm = ({ onSubmit }) => {
 };
 
 const SignIn = () => {
-  const onSubmit = (values) => console.log(values);
+  const [signIn] = useSignIn();
+
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+
+    try {
+      const { data } = await signIn({ username, password });
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Formik
