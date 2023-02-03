@@ -7,7 +7,7 @@ const useAuthorizedUser = () => {
   });
 
   const { data } = getAuthUser;
-  const user = data ? data.me : undefined;
+  const user = data?.me;
 
   return { user };
 };

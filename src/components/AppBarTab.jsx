@@ -1,4 +1,5 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
+import { Link } from 'react-router-native';
 import Constants from 'expo-constants';
 import { Subheading } from './Text';
 
@@ -13,11 +14,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const AppBarTab = ({ text }) => {
-  return (
+const AppBarTab = ({ to, children, ...props }) => {
+  const content = (
     <View style={styles.container}>
-      <Subheading style={styles.barText}>{text}</Subheading>
+      <Subheading style={styles.barText}>{children}</Subheading>
     </View>
+  );
+  return to ? (
+    <Link to={to}>{content}</Link>
+  ) : (
+    <Pressable {...props}>{content}</Pressable>
   );
 };
 

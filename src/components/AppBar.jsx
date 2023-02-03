@@ -1,5 +1,4 @@
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Link } from 'react-router-native';
 import Constants from 'expo-constants';
 import theme from '../theme';
 import AppBarTab from './AppBarTab';
@@ -28,26 +27,22 @@ const AppBar = () => {
     apolloClient.resetStore();
   };
 
-  const signInTab =
-    user === null ? (
-      <Link to="/signin">
-        <AppBarTab text="Sign in" />
-      </Link>
-    ) : (
-      <Link onPress={() => signOut()}>
-        <AppBarTab text="Sign out" />
-      </Link>
-    );
+  const tabs = (
+    <>
+      <AppBarTab to={'/'}>Repositories</AppBarTab>;{' '}
+      {user === null ? (
+        <AppBarTab to={'/signin'}>Sign in</AppBarTab>
+      ) : (
+        <AppBarTab onPress={signOut}>Sign out</AppBarTab>
+      )}
+      ;
+    </>
+  );
 
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
-        <View style={styles.flexContainer}>
-          <Link to="/">
-            <AppBarTab text="Repositories" />
-          </Link>
-          {signInTab}
-        </View>
+        <View style={styles.flexContainer}>{tabs}</View>
       </ScrollView>
     </View>
   );
