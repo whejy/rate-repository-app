@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import Constants from 'expo-constants';
 import theme from '../theme';
 import AppBarTab from './AppBarTab';
@@ -29,13 +29,18 @@ const AppBar = () => {
 
   const tabs = (
     <>
-      <AppBarTab to={'/'}>Repositories</AppBarTab>;{' '}
+      <AppBarTab to={'/'}>
+        <Text>Repositories</Text>
+      </AppBarTab>
       {user === null ? (
-        <AppBarTab to={'/signin'}>Sign in</AppBarTab>
+        <AppBarTab to={'/signin'}>
+          <Text>Sign in</Text>
+        </AppBarTab>
       ) : (
-        <AppBarTab onPress={signOut}>Sign out</AppBarTab>
+        <AppBarTab onPress={signOut}>
+          <Text>Sign out</Text>
+        </AppBarTab>
       )}
-      ;
     </>
   );
 

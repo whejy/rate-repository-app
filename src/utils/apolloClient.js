@@ -4,6 +4,8 @@ import { setContext } from '@apollo/client/link/context';
 
 const { uri } = Constants.manifest.extra;
 
+console.log(uri);
+
 const httpLink = createHttpLink({
   uri: uri,
 });
@@ -25,8 +27,6 @@ const createApolloClient = (authStorage) => {
       };
     }
   });
-
-  console.log('AUTH: ', authLink);
 
   return new ApolloClient({
     link: authLink.concat(httpLink),
