@@ -45,11 +45,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const ItemCounts = ({ item, label }) => {
+const ItemCounts = ({ item, label, testID }) => {
   item > 999 && (item = parseFloat((item / 1000).toFixed(1)) + 'k');
   return (
     <View style={styles.itemCountContainer}>
-      <ItemStats>{item}</ItemStats>
+      <ItemStats testID={testID}>{item}</ItemStats>
       <ItemStatsLabel>{label}</ItemStatsLabel>
     </View>
   );
@@ -67,22 +67,26 @@ const RepositoryItem = ({ item }) => {
     ratingAverage,
   } = item;
   return (
-    <View>
+    <View testID="repositoryItem">
       <View style={styles.container}>
         <Image style={styles.tinyAvatar} source={{ uri: ownerAvatarUrl }} />
         <View style={styles.detailsContainer}>
-          <Subheading style={styles.fullNameText}>{fullName}</Subheading>
-          <Text color="textSecondary">{description}</Text>
-          <View style={styles.languageContainer}>
+          <Subheading testID="name" style={styles.fullNameText}>
+            {fullName}
+          </Subheading>
+          <Text testID="description" color="textSecondary">
+            {description}
+          </Text>
+          <View testID="language" style={styles.languageContainer}>
             <Text style={styles.languageText}>{language}</Text>
           </View>
         </View>
       </View>
       <View style={styles.statsContainer}>
-        <ItemCounts item={stargazersCount} label={'Stars'} />
-        <ItemCounts item={forksCount} label={'Forks'} />
-        <ItemCounts item={reviewCount} label={'Reviews'} />
-        <ItemCounts item={ratingAverage} label={'Rating'} />
+        <ItemCounts testID={'stars'} item={stargazersCount} label={'Stars'} />
+        <ItemCounts testID={'forks'} item={forksCount} label={'Forks'} />
+        <ItemCounts testID={'reviews'} item={reviewCount} label={'Reviews'} />
+        <ItemCounts testID={'rating'} item={ratingAverage} label={'Rating'} />
       </View>
     </View>
   );
