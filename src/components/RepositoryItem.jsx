@@ -1,8 +1,13 @@
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Pressable, Linking } from 'react-native';
+import { useNavigate } from 'react-router-native';
 import Text, { Subheading, ItemStats, ItemStatsLabel } from './Text';
+import Button from './Button';
 import theme from '../theme';
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    backgroundColor: 'white',
+  },
   container: {
     padding: 10,
     display: 'flex',
@@ -24,8 +29,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 5,
   },
-  languageText: {
+  textColor: {
     color: 'white',
+  },
+  linkButton: {
+    margin: 10,
   },
   itemCountContainer: {
     display: 'flex',
@@ -55,8 +63,9 @@ const ItemCounts = ({ item, label, testID }) => {
   );
 };
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, single }) => {
   const {
+    id,
     fullName,
     description,
     language,
@@ -65,29 +74,47 @@ const RepositoryItem = ({ item }) => {
     forksCount,
     reviewCount,
     ratingAverage,
+    url,
   } = item;
+
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate(`/repository/${id}`);
+  };
+
+  const openUrl = () => {
+    Linking.openURL(`${url}`);
+  };
+
   return (
-    <View testID="repositoryItem">
-      <View style={styles.container}>
-        <Image style={styles.tinyAvatar} source={{ uri: ownerAvatarUrl }} />
-        <View style={styles.detailsContainer}>
-          <Subheading testID="name" style={styles.fullNameText}>
-            {fullName}
-          </Subheading>
-          <Text testID="description" color="textSecondary">
-            {description}
-          </Text>
-          <View testID="language" style={styles.languageContainer}>
-            <Text style={styles.languageText}>{language}</Text>
+    <View testID="repositoryItem" style={styles.outerContainer}>
+      <Pressable onPress={handleNavigate}>
+        <View style={styles.container}>
+          <Image style={styles.tinyAvatar} source={{ uri: ownerAvatarUrl }} />
+          <View style={styles.detailsContainer}>
+            <Subheading testID="name" style={styles.fullNameText}>
+              {fullName}
+            </Subheading>
+            <Text testID="description" color="textSecondary">
+              {description}
+            </Text>
+            <View testID="language" style={styles.languageContainer}>
+              <Text style={{ color: 'white' }}>{language}</Text>
+            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.statsContainer}>
-        <ItemCounts testID={'stars'} item={stargazersCount} label={'Stars'} />
-        <ItemCounts testID={'forks'} item={forksCount} label={'Forks'} />
-        <ItemCounts testID={'reviews'} item={reviewCount} label={'Reviews'} />
-        <ItemCounts testID={'rating'} item={ratingAverage} label={'Rating'} />
-      </View>
+        <View style={styles.statsContainer}>
+          <ItemCounts testID={'stars'} item={stargazersCount} label={'Stars'} />
+          <ItemCounts testID={'forks'} item={forksCount} label={'Forks'} />
+          <ItemCounts testID={'reviews'} item={reviewCount} label={'Reviews'} />
+          <ItemCounts testID={'rating'} item={ratingAverage} label={'Rating'} />
+        </View>
+      </Pressable>
+      {single && (
+        <Button onPress={openUrl} style={styles.linkButton}>
+          Open on GitHub
+        </Button>
+      )}
     </View>
   );
 };
