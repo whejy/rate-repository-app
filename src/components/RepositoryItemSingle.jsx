@@ -1,6 +1,7 @@
-import { View, StyleSheet, FlatList, Text } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { useParams } from 'react-router-native';
 import useRepository from '../hooks/useRepository';
+import ReviewItem from './ReviewItem';
 import RepositoryItem from './RepositoryItem';
 
 const styles = StyleSheet.create({
@@ -8,27 +9,16 @@ const styles = StyleSheet.create({
     height: 10,
     backgroundColor: '#e1e4e8',
   },
-  container: {
+  listContainer: {
+    paddingBottom: 140,
+  },
+  listItemContainer: {
     backgroundColor: 'white',
+    paddingBottom: 10,
   },
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
-
-const RepositoryInfo = ({ repository }) => {
-  return <RepositoryItem item={repository} single />;
-};
-
-const ReviewItem = ({ review }) => {
-  return (
-    <>
-      <Text>{review.user.username}</Text>
-      <Text>{review.rating}</Text>
-      <Text>{review.createdAt}</Text>
-      <Text>{review.text}</Text>
-    </>
-  );
-};
 
 const RepositoryItemSingle = () => {
   const { id } = useParams();
@@ -39,15 +29,15 @@ const RepositoryItemSingle = () => {
     : [];
 
   return (
-    <View>
+    <View style={styles.listContainer}>
       {!loading && (
         <FlatList
-          style={styles.container}
           data={reviewNodes}
           ItemSeparatorComponent={ItemSeparator}
-          ListHeaderComponent={<RepositoryInfo repository={repository} />}
+          ListHeaderComponent={<RepositoryItem item={repository} single />}
           renderItem={({ item }) => <ReviewItem review={item} />}
           keyExtractor={({ id }) => id}
+          contentContainerStyle={styles.listItemContainer}
         />
       )}
     </View>
