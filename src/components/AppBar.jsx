@@ -5,6 +5,7 @@ import AppBarTab from './AppBarTab';
 import useAuthorizedUser from '../hooks/useAuthorizedUser';
 import useAuthStorage from '../hooks/useAuthStorage';
 import { useApolloClient } from '@apollo/client';
+import { useNavigate } from 'react-router';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,11 +21,13 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const apolloClient = useApolloClient();
   const authStorage = useAuthStorage();
+  const navigate = useNavigate();
   const { user } = useAuthorizedUser();
 
   const signOut = async () => {
     await authStorage.removeAccessToken();
     apolloClient.resetStore();
+    navigate('/');
   };
 
   const tabs = (
