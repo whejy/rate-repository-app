@@ -36,7 +36,7 @@ const SignInForm = ({ onSubmit }) => {
 
 export const SignInContainer = ({ onSubmit }) => {
   return (
-    <View style={styles.container}>
+    <View>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}

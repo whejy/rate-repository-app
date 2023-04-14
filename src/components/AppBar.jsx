@@ -33,9 +33,14 @@ const AppBar = () => {
         <Text>Repositories</Text>
       </AppBarTab>
       {user === null ? (
-        <AppBarTab to={'/signin'}>
-          <Text>Sign in</Text>
-        </AppBarTab>
+        <>
+          <AppBarTab to={'/signin'}>
+            <Text>Sign in</Text>
+          </AppBarTab>
+          <AppBarTab to={'/signup'}>
+            <Text>Sign up</Text>
+          </AppBarTab>
+        </>
       ) : (
         <>
           <AppBarTab to={'/review'}>
