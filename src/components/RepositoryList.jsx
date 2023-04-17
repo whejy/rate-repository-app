@@ -1,4 +1,6 @@
 import { FlatList, View, StyleSheet, Text } from 'react-native';
+import { useState } from 'react';
+import Selector from './Selector';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 
@@ -18,7 +20,11 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({ repositories }) => {
+export const RepositoryListContainer = ({
+  repositories,
+  principle,
+  setPrinciple,
+}) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
@@ -29,6 +35,9 @@ export const RepositoryListContainer = ({ repositories }) => {
         style={styles.container}
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
+        ListHeaderComponent={
+          <Selector principle={principle} setPrinciple={setPrinciple} />
+        }
         renderItem={({ item }) => <RepositoryItem item={item} />}
         keyExtractor={(item) => item.id}
       />
@@ -37,12 +46,27 @@ export const RepositoryListContainer = ({ repositories }) => {
 };
 
 const RepositoryList = () => {
-  const { repositories, loading } = useRepositories();
+  const [principle, setPrinciple] = useState('latest');
+
+  const variables =
+    principle === 'latest'
+      ? { orderBy: 'CREATED_AT' }
+      : principle === 'highest'
+      ? { orderBy: 'RATING_AVERAGE', orderDirection: 'DESC' }
+      : { orderBy: 'RATING_AVERAGE', orderDirection: 'ASC' };
+
+  const { repositories, loading } = useRepositories({
+    variables,
+  });
 
   return loading ? (
     <Text style={styles.loadingText}>Loading...</Text>
   ) : (
-    <RepositoryListContainer repositories={repositories} />
+    <RepositoryListContainer
+      principle={principle}
+      setPrinciple={setPrinciple}
+      repositories={repositories}
+    />
   );
 };
 
