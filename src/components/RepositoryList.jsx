@@ -1,17 +1,21 @@
 import { FlatList, View, StyleSheet, Text } from 'react-native';
-import { useState } from 'react';
-import Selector from './Selector';
+import { useState, Component } from 'react';
+import { useDebounce } from 'use-debounce';
+import Filters from './Filters';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 
 const styles = StyleSheet.create({
   separator: {
     height: 10,
-    backgroundColor: '#e1e4e8',
   },
-  container: {
+  header: {
+    margin: 10,
+  },
+  searchBar: {
     backgroundColor: 'white',
   },
+  container: {},
   loadingText: {
     textAlign: 'center',
     marginTop: '50%',
@@ -20,40 +24,45 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({
-  repositories,
-  principle,
-  setPrinciple,
-}) => {
-  const repositoryNodes = repositories
-    ? repositories.edges.map((edge) => edge.node)
-    : [];
+export class RepositoryListContainer extends Component {
+  renderHeader = () => {
+    return <Filters {...this.props} />;
+  };
 
-  return (
-    <>
+  render() {
+    const { repositories } = this.props;
+
+    const repositoryNodes = repositories
+      ? repositories.edges.map((edge) => edge.node)
+      : [];
+
+    return (
       <FlatList
         style={styles.container}
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
-        ListHeaderComponent={
-          <Selector principle={principle} setPrinciple={setPrinciple} />
-        }
+        ListHeaderComponent={this.renderHeader}
         renderItem={({ item }) => <RepositoryItem item={item} />}
         keyExtractor={(item) => item.id}
       />
-    </>
-  );
-};
+    );
+  }
+}
 
 const RepositoryList = () => {
   const [principle, setPrinciple] = useState('latest');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchKeyword] = useDebounce(searchQuery, 500);
 
-  const variables =
-    principle === 'latest'
-      ? { orderBy: 'CREATED_AT' }
-      : principle === 'highest'
-      ? { orderBy: 'RATING_AVERAGE', orderDirection: 'DESC' }
-      : { orderBy: 'RATING_AVERAGE', orderDirection: 'ASC' };
+  const orderBy = principle === 'latest' ? 'CREATED_AT' : 'RATING_AVERAGE';
+  const orderDirection =
+    principle === 'highest' || principle === 'latest' ? 'DESC' : 'ASC';
+
+  const variables = {
+    orderBy,
+    orderDirection,
+    searchKeyword,
+  };
 
   const { repositories, loading } = useRepositories({
     variables,
@@ -66,6 +75,8 @@ const RepositoryList = () => {
       principle={principle}
       setPrinciple={setPrinciple}
       repositories={repositories}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
     />
   );
 };
