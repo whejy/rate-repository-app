@@ -55,6 +55,7 @@ const RepositoryList = () => {
   const [searchKeyword] = useDebounce(searchQuery, 500);
 
   const orderBy = principle === 'latest' ? 'CREATED_AT' : 'RATING_AVERAGE';
+
   const orderDirection =
     principle === 'highest' || principle === 'latest' ? 'DESC' : 'ASC';
 
@@ -64,17 +65,15 @@ const RepositoryList = () => {
     searchKeyword,
   };
 
-  const { repositories, loading } = useRepositories({
-    variables,
-  });
+  const { repositories, loading } = useRepositories({ variables });
 
   return loading ? (
     <Text style={styles.loadingText}>Loading...</Text>
   ) : (
     <RepositoryListContainer
+      repositories={repositories}
       principle={principle}
       setPrinciple={setPrinciple}
-      repositories={repositories}
       searchQuery={searchQuery}
       setSearchQuery={setSearchQuery}
     />

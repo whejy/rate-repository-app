@@ -11,6 +11,18 @@ const styles = StyleSheet.create({
   },
 });
 
+const SearchBar = ({ style, searchQuery, setSearchQuery }) => {
+  const onChangeSearch = (query) => setSearchQuery(query);
+  return (
+    <Searchbar
+      placeholder="Search"
+      onChangeText={onChangeSearch}
+      value={searchQuery}
+      style={style}
+    />
+  );
+};
+
 const Selector = ({ principle, setPrinciple }) => {
   return (
     <Picker
@@ -21,19 +33,6 @@ const Selector = ({ principle, setPrinciple }) => {
       <Picker.Item label="Highest rated repositories" value="highest" />
       <Picker.Item label="Lowest rated repositories" value="lowest" />
     </Picker>
-  );
-};
-
-const SearchBar = ({ style, searchQuery, setSearchQuery }) => {
-  const onChangeSearch = (query) => setSearchQuery(query);
-
-  return (
-    <Searchbar
-      placeholder="Search"
-      onChangeText={onChangeSearch}
-      value={searchQuery}
-      style={style}
-    />
   );
 };
 
