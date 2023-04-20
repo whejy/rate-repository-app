@@ -28,7 +28,7 @@ const MyReviews = () => {
     includeReviews: true,
   };
 
-  const { user, loading } = useAuthorizedUser(variables);
+  const { user, loading, refetch } = useAuthorizedUser(variables);
   if (!user) return null;
 
   const reviews = user?.reviews;
@@ -43,7 +43,9 @@ const MyReviews = () => {
         <FlatList
           data={reviewNodes}
           ItemSeparatorComponent={ItemSeparator}
-          renderItem={({ item }) => <ReviewItem review={item} />}
+          renderItem={({ item }) => (
+            <ReviewItem personal review={item} refetch={refetch} />
+          )}
           keyExtractor={({ id }) => id}
           contentContainerStyle={styles.listItemContainer}
         />

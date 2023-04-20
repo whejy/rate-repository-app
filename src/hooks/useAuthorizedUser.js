@@ -7,10 +7,10 @@ const useAuthorizedUser = (variables) => {
     variables,
   });
 
-  const { data, loading } = getAuthUser;
+  const { data, loading, refetch } = getAuthUser;
   const user = data?.me;
 
-  return { user, loading };
+  return { user, loading, refetch };
 };
 
 export default useAuthorizedUser;

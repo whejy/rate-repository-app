@@ -13,10 +13,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
+  error: {
+    backgroundColor: theme.colors.error,
+  },
 });
 
-const Button = ({ children, style, ...props }) => {
-  const buttonStyle = [styles.button, style];
+const Button = ({ children, variant, style, ...props }) => {
+  const buttonStyle = [
+    styles.button,
+    variant === 'danger' && styles.error,
+    style,
+  ];
   return (
     <TouchableOpacity activeOpacity={0.8} {...props}>
       <View style={buttonStyle}>

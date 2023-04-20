@@ -55,6 +55,7 @@ export const ME = gql`
             ...ReviewDetails
             repository {
               fullName
+              id
             }
           }
         }
