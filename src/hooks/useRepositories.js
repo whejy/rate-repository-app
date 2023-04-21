@@ -7,10 +7,23 @@ const useRepositories = ({ variables }) => {
     variables,
   });
 
-  const { loading, data, refetch } = fetchRepositories;
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
+
+    if (!canFetchMore) return;
+
+    fetchMore({
+      variables: {
+        after: data.repositories.pageInfo.endCursor,
+        ...variables,
+      },
+    });
+  };
+
+  const { loading, data, refetch, fetchMore } = fetchRepositories;
   const repositories = data ? data.repositories : [];
 
-  return { repositories, loading, refetch };
+  return { repositories, loading, refetch, fetchMore: handleFetchMore };
 };
 
 export default useRepositories;

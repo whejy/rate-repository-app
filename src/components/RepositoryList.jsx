@@ -30,7 +30,7 @@ export class RepositoryListContainer extends Component {
   };
 
   render() {
-    const { repositories } = this.props;
+    const { repositories, onEndReach } = this.props;
 
     const repositoryNodes = repositories
       ? repositories.edges.map((edge) => edge.node)
@@ -42,6 +42,8 @@ export class RepositoryListContainer extends Component {
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
         ListHeaderComponent={this.renderHeader}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
         renderItem={({ item }) => <RepositoryItem item={item} />}
         keyExtractor={(item) => item.id}
       />
@@ -60,12 +62,17 @@ const RepositoryList = () => {
     principle === 'highest' || principle === 'latest' ? 'DESC' : 'ASC';
 
   const variables = {
+    first: 8,
     orderBy,
     orderDirection,
     searchKeyword,
   };
 
-  const { repositories, loading } = useRepositories({ variables });
+  const { repositories, loading, fetchMore } = useRepositories({ variables });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return loading ? (
     <Text style={styles.loadingText}>Loading...</Text>
@@ -76,6 +83,7 @@ const RepositoryList = () => {
       setPrinciple={setPrinciple}
       searchQuery={searchQuery}
       setSearchQuery={setSearchQuery}
+      onEndReach={onEndReach}
     />
   );
 };

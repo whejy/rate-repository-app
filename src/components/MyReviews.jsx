@@ -31,8 +31,7 @@ const MyReviews = () => {
   const { user, loading, refetch } = useAuthorizedUser(variables);
   if (!user) return null;
 
-  const reviews = user?.reviews;
-
+  const { reviews } = user;
   const reviewNodes = reviews ? reviews.edges.map((edge) => edge.node) : [];
 
   return loading ? (
