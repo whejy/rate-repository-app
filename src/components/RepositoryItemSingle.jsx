@@ -22,11 +22,21 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryItemSingle = () => {
   const { id } = useParams();
-  const { loading, repository } = useRepository({ id });
+
+  const variables = {
+    first: 4,
+    id,
+  };
+
+  const { loading, repository, fetchMore } = useRepository({ variables });
 
   const reviewNodes = repository
     ? repository.reviews.edges.map((edge) => edge.node)
     : [];
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <View style={styles.listContainer}>
@@ -37,6 +47,8 @@ const RepositoryItemSingle = () => {
           ListHeaderComponent={<RepositoryItem item={repository} single />}
           renderItem={({ item }) => <ReviewItem review={item} />}
           keyExtractor={({ id }) => id}
+          onEndReached={onEndReach}
+          onEndReachedThreshold={0.5}
           contentContainerStyle={styles.listItemContainer}
         />
       )}
